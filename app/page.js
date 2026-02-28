@@ -59,6 +59,7 @@ const CustomSelect = ({ label, name, options, value, onChange, placeholder = "Se
 export default function Home() {
   const [formData, setFormData] = useState({
     nombre: '',
+    discordUser: '',
     edad: '',
     conoceNormas: '',
     accionPersecucion: '',
@@ -95,26 +96,31 @@ export default function Home() {
 
     const webhookUrl = 'https://discord.com/api/webhooks/1477317129840758958/5n5KfN2tSAwa53S83Oj6MVoyZ5qHUzYInD38dVFrVLGl0_olW2UVxQqbS3G6Tsz94J1c';
 
-    // Build the Discord Embed
+    // Build the Discord Embed v2 (Simplified)
     const embed = {
-      title: '📋 Nuevo Formulario Policial Recibido',
-      color: 0x00f2ff, // Neon Cyan
-      timestamp: new Date().toISOString(),
+      title: '🚔 NUEVA POSTULACIÓN: POLICÍA NACIONAL',
+      description: `Se ha recibido un nuevo formulario de reclutamiento para la unidad de **Palanqueo RP**.`,
+      color: 0x2b2d31, // Color similar al fondo de Discord
+      image: {
+        url: 'https://i.imgur.com/wzrvOEA.png'
+      },
       fields: [
-        { name: '👤 Nombre', value: formData.nombre || 'No proporcionado', inline: true },
-        { name: '🎂 Edad', value: formData.edad || 'No proporcionado', inline: true },
-        { name: '📜 Conoce Normas', value: formData.conoceNormas || 'No proporcionado', inline: true },
-        { name: '🏎️ Persecución', value: formData.accionPersecucion || 'No proporcionado', inline: true },
-        { name: '🚫 Abuso Poder', value: formData.abusoPoder || 'No proporcionado', inline: true },
-        { name: '🫡 Cadena Mando', value: formData.cadenaMando || 'No proporcionado', inline: true },
-        { name: '🔫 Armamento', value: formData.usoArmamento || 'No proporcionado', inline: true },
-        { name: '⚖️ Sanciones', value: formData.aceptaSanciones || 'No proporcionado', inline: true },
-        { name: '⭐ Experiencia', value: formData.experiencia || 'No proporcionado', inline: true },
-        { name: '📝 Motivo', value: formData.motivo || 'No proporcionado' }
+        { name: '👤 Nombre completo del aspirante', value: `\`${formData.nombre}\``, inline: false },
+        { name: '� Discord Username', value: `\`${formData.discordUser}\``, inline: false },
+        { name: '🎂 Edad', value: `\`${formData.edad}\``, inline: false },
+        { name: '⭐ Experiencia previa en roles policiales', value: `\`${formData.experiencia}\``, inline: false },
+        { name: '📜 ¿Conoce las normas del rol policial?', value: formData.conoceNormas === 'Sí' ? '✅ Sí' : '❌ No', inline: false },
+        { name: '🚫 ¿Está permitido el abuso de poder?', value: formData.abusoPoder === 'Sí' ? '⚠️ Sí' : '✅ No', inline: false },
+        { name: '🫡 ¿Respeta la cadena de mando?', value: `\`${formData.cadenaMando}\``, inline: false },
+        { name: '🔫 ¿Uso correcto del armamento?', value: `\`${formData.usoArmamento}\``, inline: false },
+        { name: '🏎️ ¿Qué haría ante una persecución?', value: `\`${formData.accionPersecucion}\``, inline: false },
+        { name: '⚖️ ¿Acepta sanciones si incumple normas?', value: formData.aceptaSanciones === 'Sí' ? '✅ Sí' : '❌ No', inline: false },
+        { name: '📝 ¿Por qué quiere ingresar a la Policía Nacional?', value: `\`\`\`${formData.motivo}\`\`\``, inline: false }
       ],
       footer: {
-        text: 'Sistema de Reclutamiento - Palanqueo RP'
-      }
+        text: 'Sistema de Selección Policial • Palanqueo RP'
+      },
+      timestamp: new Date().toISOString()
     };
 
     try {
@@ -130,6 +136,7 @@ export default function Home() {
         setStatus({ type: 'success', message: '¡Formulario enviado con éxito, agente!' });
         setFormData({
           nombre: '',
+          discordUser: '',
           edad: '',
           conoceNormas: '',
           accionPersecucion: '',
@@ -185,6 +192,20 @@ export default function Home() {
           />
         </div>
 
+        {/* Discord User Field */}
+        <div className="form-group">
+          <label htmlFor="discordUser">Discord Username</label>
+          <input
+            id="discordUser"
+            name="discordUser"
+            type="text"
+            placeholder="ejemplo#0000 o solo nombre..."
+            value={formData.discordUser}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
         {/* Field 2 */}
         <CustomSelect
           label="Edad"
@@ -192,10 +213,11 @@ export default function Home() {
           value={formData.edad}
           onChange={handleChange}
           options={[
+            { value: "-15", label: "Menos de 15 años" },
+            { value: "15 - 18", label: "15 - 18 años" },
             { value: "18 - 25", label: "18 - 25 años" },
             { value: "26 - 35", label: "26 - 35 años" },
-            { value: "36 - 45", label: "36 - 45 años" },
-            { value: "46+", label: "Más de 46 años" }
+            { value: "+36", label: "Más de 36 años" }
           ]}
         />
 
@@ -333,6 +355,7 @@ export default function Home() {
           options={[
             { value: "Ninguna", label: "Ninguna" },
             { value: "Básica", label: "Básica" },
+            { value: "Intermedia", label: "Intermedia" },
             { value: "Avanzada", label: "Avanzada" }
           ]}
         />

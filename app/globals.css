@@ -1,8 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@400;500;600;700&display=swap');
 
 :root {
-  --primary: #00f2ff;
-  --primary-glow: rgba(0, 242, 255, 0.5);
+  --primary: #00aeff;
+  --primary-glow: #00aeff48;
   --secondary: #00ff88;
   --secondary-glow: rgba(0, 255, 136, 0.3);
   --bg: #050a12;
@@ -154,10 +154,10 @@ h3 {
   flex-direction: column;
 }
 
-.form-group label {
+.form-group>label {
   font-weight: 700;
-  font-size: 0.9rem;
-  margin-bottom: 0.7rem;
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
   color: #ffffff;
   display: flex;
   align-items: center;
@@ -166,11 +166,11 @@ h3 {
   letter-spacing: 1px;
 }
 
-.form-group label::before {
+.form-group>label::before {
   content: "";
   display: block;
   width: 4px;
-  height: 14px;
+  height: 18px;
   background: var(--primary);
   box-shadow: 0 0 8px var(--primary-glow);
 }
@@ -358,8 +358,31 @@ textarea:focus {
 }
 
 .radio-item input:checked {
-  background: var(--primary);
-  box-shadow: 0 0 8px var(--primary-glow);
+  background: rgba(0, 174, 255, 0.1);
+  box-shadow: 0 0 12px var(--primary-glow);
+}
+
+.radio-item input:checked::after {
+  content: "";
+  position: absolute;
+  left: 3.5px;
+  top: -1px;
+  width: 5px;
+  height: 10px;
+  border: solid var(--primary);
+  border-width: 0 3px 3px 0;
+  transform: rotate(45deg);
+  animation: checkPop 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes checkPop {
+  from {
+    transform: rotate(45deg) scale(0);
+  }
+
+  to {
+    transform: rotate(45deg) scale(1);
+  }
 }
 
 .submit-btn {
